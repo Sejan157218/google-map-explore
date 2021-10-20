@@ -1,23 +1,31 @@
-import logo from './logo.svg';
+import { DirectionsService } from '@react-google-maps/api';
+import { useRef, useState } from 'react';
 import './App.css';
+import Directionmap from './Components/Directionmap/Directionmap';
+import Googlemap from './Components/GoogleMap/Googlemap';
 
 function App() {
+const [origin,setOrigin] = useState('');
+const [destination,setDestination] = useState('');
+const originRef=useRef('');
+const destinationRef=useRef('');
+
+  const handlerDirection= e =>{
+    setOrigin(originRef.current.value);
+    setDestination(destinationRef.current.value);
+    e.preventDefault();
+  }
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <form onSubmit={handlerDirection}>
+        <input type="text" ref={originRef} placeholder="start from" />
+        <br />
+        <input type="text" ref={destinationRef} placeholder="Destination" />
+        <br />
+        <input type="submit" value="Get Direction" />
+      </form>
+      <Googlemap></Googlemap>
+      <Directionmap destination={destination} origin={origin} ></Directionmap>
     </div>
   );
 }
